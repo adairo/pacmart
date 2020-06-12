@@ -1,0 +1,102 @@
+{% extends 'store/principal.html' %}
+{% load static %}
+{% block content %}
+
+<h4>{{origen}}</h4>
+<hr>
+
+
+<div class="row">
+
+    {% if object_list.0 %}
+    <div class="col-lg-4">
+        <img class="thumbnail" src="{{object_list.0.imagen.url}}">
+        <div class="box-element product">
+            <h6><strong>{{object_list.0.titulo}}</strong></h6>
+            <hr>
+
+            <button  class="btn btn-outline-secondary add-btn">Agregar a carrito</button>
+            <a class="btn btn-outline-success" href="{{object_list.0.get_absolute_url}}">Ver</a>
+            <h4 style="display: inline-block; float: right"><strong>${{object_list.0.precio}}</strong></h4>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if object_list.1 %}
+    <div class="col-lg-4">
+        <img class="thumbnail" src="{{object_list.1.imagen.url}}">
+        <div class="box-element product">
+            <h6><strong>{{object_list.1.titulo}}</strong></h6>
+            <hr>
+
+            <button  class="btn btn-outline-secondary add-btn">Agregar a carrito</button>
+            <a class="btn btn-outline-success" href="{{object_list.1.get_absolute_url}}">Ver</a>
+            <h4 style="display: inline-block; float: right"><strong>${{object_list.1.precio}}</strong></h4>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if object_list.2 %}
+    <div class="col-lg-4">
+        <img class="thumbnail" src="{{object_list.2.imagen.url}}">
+        <div class="box-element product">
+            <h6><strong>{{object_list.2.titulo}}</strong></h6>
+            <hr>
+
+            <button  class="btn btn-outline-secondary add-btn">Agregar a carrito</button>
+            <a class="btn btn-outline-success" href="{{object_list.2.get_absolute_url}}">Ver</a>
+            <h4 style="display: inline-block; float: right"><strong>${{object_list.2.precio}}</strong></h4>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if object_list.3 %}
+    <div class="col-lg-4">
+        <img class="thumbnail" src="{{object_list.3.imagen.url}}">
+        <div class="box-element product">
+            <h6><strong>{{object_list.3.titulo}}</strong></h6>
+            <hr>
+
+            <button  class="btn btn-outline-secondary add-btn">Agregar a carrito</button>
+            <a class="btn btn-outline-success" href="{{object_list.3.get_absolute_url}}">Ver</a>
+            <h4 style="display: inline-block; float: right"><strong>${{object_list.3.precio}}</strong></h4>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if object_list.4 %}
+    <div class="col-lg-4">
+        <img class="thumbnail" src="{{object_list.0.imagen.url}}">
+        <div class="box-element product">
+            <h6><strong>{{object_list.4.titulo}}</strong></h6>
+            <hr>
+
+            <button  class="btn btn-outline-secondary add-btn">Agregar a carrito</button>
+            <a class="btn btn-outline-success" href="{{object_list.4.get_absolute_url}}">Ver</a>
+            <h4 style="display: inline-block; float: right"><strong>${{object_list.4.precio}}</strong></h4>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if object_list.5 %}
+    <div class="col-lg-4">
+        <img class="thumbnail" src="{{object_list.5.imagen.url}}">
+        <div class="box-element product">
+            <h6><strong>{{object_list.5.titulo}}</strong></h6>
+            <hr>
+
+            <button  class="btn btn-outline-secondary add-btn">Agregar a carrito</button>
+            <a class="btn btn-outline-success" href="{{object_list.5.get_absolute_url}}">Ver</a>
+            <h4 style="display: inline-block; float: right"><strong>${{object_list.5.precio}}</strong></h4>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+
+
+    
+    
+
+{% endblock content %}

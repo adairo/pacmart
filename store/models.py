@@ -14,7 +14,7 @@ from django.shortcuts import reverse
 #Agreguen cuantas categorías necesiten para hacer pruebas
 CATEGORIAS =(
             ('IN',  'Indeterminado'),
-            ('EL',  'Electrónicos'),
+            ('EU',  'Electrónicos'),
             ('DS',  'Deportes'),
             ('ED',  'Electrodomésticos'),
             ('LB',  'Libros'),
@@ -35,7 +35,7 @@ class Producto(models.Model):
                                     default='product_thumb_placeholder.png')
 
     categoria   =   models.CharField(choices=CATEGORIAS, 
-                                    max_length=2, 
+                                    max_length=10, 
                                     default='IN')
 
     descripcion =   models.TextField(blank=True, null=True)

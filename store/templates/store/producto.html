@@ -31,26 +31,79 @@
                 <span class="badge red mr-2">Lo mas vendido</span>
               </a>
             </div>
+			 <p class="lead font-weight-bold">{{object.titulo}}</p>
 
             <p class="lead">
               <span>$</span><span>{{object.precio}}</span>
-            </p>
-            <p class="lead font-weight-bold">{{object.titulo}}</p>
 			<!-----Ranking---->
 					<head>
 					<!-- Font Awesome Icon Library -->
 					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 					<style>.checked { color: orange;}</style>
 					</head>
+
+
+					{% if object.puntuacion == 1 %}
+					<body>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					</body>
+					{% endif %}
+
+					{% if object.puntuacion == 2 %}
+					<body>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					</body>
+					{% endif %}
+
+					{% if object.puntuacion == 3 %}
+					<body>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					</body>
+					{% endif %}
+
+					{% if object.puntuacion == 4 %}
+					<body>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star "></span>
+					</body>
+					{% endif %}
+
+					{% if object.puntuacion == 5 %}
 					<body>
 					<span class="fa fa-star checked"></span>
 					<span class="fa fa-star checked"></span>
 					<span class="fa fa-star checked"></span>
 					<span class="fa fa-star checked"></span>
 					<span class="fa fa-star checked"></span>
+					</body>			
+					{% else %}
+					<body>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
 					</body>
-			<!-----Ranking---->
+					{% endif %}
 
+
+			<!-----Ranking---->
+			    </p>
 
             <p>{{object.descripcion}}</p>
 

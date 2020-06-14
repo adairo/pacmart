@@ -14,7 +14,7 @@ from django.shortcuts import reverse
 #Agreguen cuantas categorías necesiten para hacer pruebas
 CATEGORIAS =(
             ('IN',  'Indeterminado'),
-            ('EU',  'Electrónicos'),
+            ('EL',  'Electrónicos'),
             ('DS',  'Deportes'),
             ('ED',  'Electrodomésticos'),
             ('LB',  'Libros'),

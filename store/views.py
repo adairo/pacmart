@@ -13,6 +13,7 @@ from django.contrib import messages
 class Tienda_vista(ListView):
     model = Producto
     template_name = 'store/tienda.html'
+    queryset = Producto.objects.order_by('-fecha_mod')[:6]
 
 class Producto_vista(DetailView):
     model = Producto
@@ -30,7 +31,7 @@ class Producto_vista(DetailView):
         user_id = self.request.user
         try:
             val_id = Valoracion.objects.get(producto=producto, autor=user_id).pk
-        except Valoracion.DoesNotExist:
+        except (Valoracion.DoesNotExist, TypeError):
             val_id = False
         return val_id
         

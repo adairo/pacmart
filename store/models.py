@@ -58,6 +58,11 @@ class Producto(models.Model):
 
     def get_absolute_url(self):
         return reverse('store:producto', kwargs={'slug':self.slug})
+    
+    def get_precio(self):
+        if self.precio.is_integer():
+            return int(self.precio)
+        return self.precio
 
  
 class Producto_carrito(models.Model):

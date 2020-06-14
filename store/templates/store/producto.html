@@ -1,32 +1,6 @@
 {% extends 'store/principal.html' %}
 {% load static %}
 {% block content %}
-<<<<<<< HEAD
-
-    <h1>{{producto.titulo}}</h1>
-    <p>{{producto.descripcion}}</p>
-
-    {% if not valoracion_id %}
-        <a class="btn btn-primary" href="{% url 'store:new-valorar' producto.id%}">Valorar producto</a>
-    {% else %}
-        <a class="btn btn-primary" href="{% url 'store:edit-valorar' valoracion_id %}">Editar valoración</a>
-    {% endif %}
-    <hr>
-
-{% for val in producto.valoraciones.all %}
-<!-- 'valoraciones' hace referencia al parámetro related_name en el atributo producto de la clase Valoracion en models.py -->
-
-    <div class="valoracion">
-        <div class="date">{{ val.fecha_cre }}</div>
-        <strong>{{ val.autor }}</strong>
-        <p>{{ val.comentario}}</p>
-    </div>
-    <hr>
-
-{% empty %}
-    <p>Este producto aún no tiene comentarios</p>
-{% endfor %}
-=======
  <!--Main layout-->
   <main class="mt-5 pt-4">
     <div class="container dark-grey-text mt-5">
@@ -57,35 +31,92 @@
                 <span class="badge red mr-2">Lo mas vendido</span>
               </a>
             </div>
+			 <p class="lead font-weight-bold">{{object.titulo}}</p>
 
             <p class="lead">
               <span>$</span><span>{{object.precio}}</span>
-            </p>
-            <p class="lead font-weight-bold">{{object.titulo}}</p>
 			<!-----Ranking---->
 					<head>
 					<!-- Font Awesome Icon Library -->
 					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 					<style>.checked { color: orange;}</style>
 					</head>
+
+
+					{% if object.puntuacion == 1 %}
+					<body>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					</body>
+					{% endif %}
+
+					{% if object.puntuacion == 2 %}
+					<body>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					</body>
+					{% endif %}
+
+					{% if object.puntuacion == 3 %}
+					<body>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					</body>
+					{% endif %}
+
+					{% if object.puntuacion == 4 %}
+					<body>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star "></span>
+					</body>
+					{% endif %}
+
+					{% if object.puntuacion == 5 %}
 					<body>
 					<span class="fa fa-star checked"></span>
 					<span class="fa fa-star checked"></span>
 					<span class="fa fa-star checked"></span>
 					<span class="fa fa-star checked"></span>
 					<span class="fa fa-star checked"></span>
+					</body>			
+					{% else %}
+					<body>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
+					<span class="fa fa-star "></span>
 					</body>
-			<!-----Ranking---->
+					{% endif %}
 
+
+			<!-----Ranking---->
+			    </p>
 
             <p>{{object.descripcion}}</p>
 
             <form class="d-flex justify-content-left">
               <!-- Default input -->
               <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-              <button class="btn btn-primary btn-md my-0 p" type="submit" >Agregar al carro<i class="shopping ml-1"></i>
-			   <button class="btn btn-primary btn-md my-0  p" type="submit" style="margin-left: 10px">Valorar producto<i class="shopping ml-1"></i>
+              <button class="btn btn-primary btn-md my-0 p" type="submit">Agregar al carro<i class="shopping ml-1"></i>
               </button>
+			   {% if not valoracion_id %}
+				  <a class="btn btn-primary btn-md my-0  p" style="margin-left: 10px" href="{% url 'store:new-valorar' producto.id%}">Valorar producto</a>
+				 {% else %}
+				   <a class="btn btn-primary btn-md my-0  p" style="margin-left: 10px" href="{% url 'store:edit-valorar' valoracion_id %}">Editar valoración</a>
+				{% endif %}
 
             </form>
 
@@ -102,33 +133,11 @@
 
       <!--Grid row-->
       <div class="row d-flex justify-content-center wow fadeIn">
-
         <!--Grid column-->
         <div class="col-md-6 text-center">
-          <h4 class="my-4 h4">Comentarios de la razita</h4>
+          <h4 class="my-4 h4">Comentarios</h4>
         </div>
         <!--Grid column-->
-
-		<!-----Addcomentary---->
-	<div class="container">
-	<div class="card">
-	    <div class="card-body">
-	        <div class="row">
-        	    <div class="col-md-2">
-				<div class="col-md-10">
-        	       
-        	       <div class="clearfix"></div>
-
-        	       
-        	    </div>
-        	    
-	        </div>
-	    </div>
-	</div>
-	     </div>
-	    </div>
-	</div>
-		<!-----Addcomentary---->
 
 		<!-----comentary---->
 
@@ -136,57 +145,39 @@
 	<div class="card">
 	    <div class="card-body">
 	        <div class="row">
-        	    <div class="col-md-2">
-        	        <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>
-        	        <p class="text-secondary text-center">15 Dias</p>
-        	    </div>
         	    <div class="col-md-10">
-        	        <p>
-        	            <a class="float-left"><strong>xXmaster-raceXx</strong></a>
-        	            <span class="float-right"><i class="text-warning fa fa-star"></i></span>
-                        <span class="float-right"><i class="text-warning fa fa-star"></i></span>
-        	            <span class="float-right"><i class="text-warning fa fa-star"></i></span>
-        	            <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+						<p>
+							{% for val in producto.valoraciones.all %}
+									<!-- 'valoraciones' hace referencia al parámetro related_name en el atributo producto de la clase Valoracion en models.py -->
+								<div class="valoracion">
+									<span class="float-right"><i class="text-warning fa fa-star"></i></span>
+									<span class="float-right"><i class="text-warning fa fa-star"></i></span>
+        							<span class="float-right"><i class="text-warning fa fa-star"></i></span>
+        							<span class="float-right"><i class="text-warning fa fa-star"></i></span>
+									<span class="float-right"><i class="text-warning fa fa-star"></i></span>
+									 <strong>{{ val.autor }}</strong>
+									<div class="date">{{ val.fecha_cre }}</div>
+									<p>{{ val.comentario}}</p>
+									<hr>
+								</div>
+									
+									{% empty %}
+									
+										<p>Este producto aún no tiene comentarios</p>
+								
+									
+								{% endfor %}
 
-        	       </p>
-        	       <div class="clearfix"></div>
-        	        <p>Exelente servicio cracks.</p>
-        	        <p>
-        	            <a class="float-right btn btn-outline-primary ml-2"> <i class="fa fa-reply"></i> Reply</a>
-        	            <a class="float-right btn text-white btn-danger"> <i class="fa fa-heart"></i> Like</a>
-        	       </p>
-        	    </div>
-	        </div>
-	    </div>
-	</div>
+						</p>
 
-
-	        	<div class="card card-inner">
-            	    <div class="card-body">
-            	        <div class="row">
-                    	    <div class="col-md-2">
-                    	        <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>
-                    	        <p class="text-secondary text-center">2 Meses</p>
-                    	    </div>
-                    	    <div class="col-md-10">
-                    	        <p><a ><strong>Pablo023</strong></a></p>
-                    	        <p>excelente producto solo que la caja en la que venia estaba un poco golpeada no se si lo hicierion desde la paqueteria espero que no le afecte</p>
-                    	        <p>
-                    	            <a class="float-right btn btn-outline-primary ml-2">  <i class="fa fa-reply"></i> Reply</a>
-                    	            <a class="float-right btn text-white btn-danger"> <i class="fa fa-heart"></i> Like</a>
-                    	       </p>
-                    	    </div>
-            	        </div>
-            	    </div>
-	            </div>
-
-</div>
+        		</div>
+			</div>
+	   </div>
 		<!-----comentary---->
-      </div>
+</div>
       <!--Grid row--> 
   </main>
   <!--Main layout-->
 
->>>>>>> acf3439af0ae57bf815f443222dee8e66c70762b
 
 {% endblock content %}

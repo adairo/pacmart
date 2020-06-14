@@ -9,6 +9,10 @@ from django.shortcuts import reverse
 #   (VALOR_REAL, VALOR_LEGIBLE)
 #   Un ejemplo de esto son las opciones de categoría en Producto
 #   y opciones de puntuacion en Valoracion
+#
+#   IMPORTANTE: solo es necesario hacer migraciones cuando se modifican los atributos
+#   de las clases modelo y sus relaciones. Cuando se modifican tuplas como CATEGORIAS, o incluso
+#   métodos de las clases modelo como get_absolute_url en Producto, NO es necesario migrar.
 
 
 #Agreguen cuantas categorías necesiten para hacer pruebas
@@ -39,7 +43,11 @@ class Producto(models.Model):
                                     default='IN')
 
     descripcion =   models.TextField(blank=True, null=True)
-    slug        =   models.SlugField()  
+
+    #El campo slug brinda una URL única a cada producto
+    #Si este campo se deja vacío ocasiona conflictos incluso en la base de datos. 
+    slug        =   models.SlugField(blank=False, null=False)
+      
     #Fecha de creación se agrega automáticamente
     fecha_cre   =   models.DateTimeField(auto_now=True)
     #Fecha de modificación se actualiza automáticamente
@@ -96,8 +104,9 @@ class Direccion(models.Model):
 
 
 class Valoracion(models.Model):
-    producto    =   models.ForeignKey(Producto, on_delete=models.CASCADE)
-    autor       =   models.OneToOneField(User, on_delete=models.CASCADE)
+    producto    =   models.ForeignKey(Producto, on_delete=models.CASCADE, 
+                                                related_name='valoraciones')
+    autor       =   models.ForeignKey(User, on_delete=models.CASCADE)
     puntuacion  =   models.IntegerField(choices=[
                                                 (1,' muy malo'), 
                                                 (2, 'malo'), 

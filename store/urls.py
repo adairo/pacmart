@@ -14,6 +14,8 @@ urlpatterns = [
     path('iniciar_sesion/', views.iniciar_sesion, name='iniciar-sesion'),
     path('crear_cuenta/', views.crear_cuenta, name='crear-cuenta'),
     path('pedidos/', views.pedidos, name='pedidos'),
+    path('valorar/<int:producto_id>/', views.Valorar.as_view(), name='new-valorar'),
+    path('editar/valoracion/<int:valoracion_id>', views.Editar_Valoracion.as_view(), name='edit-valorar'),
 ]
 
 

@@ -22,6 +22,7 @@ CATEGORIAS =(
             ('AU',  'Audio'),
             ('VI',  'Video'),
             ('LB',  'Linea blanca'),
+            ('Ot',  'Otros'),
 )
 
 class Producto(models.Model):

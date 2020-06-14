@@ -13,12 +13,27 @@ from django.contrib import messages
 class Tienda_vista(ListView):
     model = Producto
     template_name = 'store/tienda.html'
-    queryset = Producto.objects.order_by('-fecha_mod')[:]
+    queryset = Producto.objects.all()
+    origen = "Últimos productos agregados"
 
     def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
-            context['origen'] = "Últimos productos agregados"
+            context['origen'] = self.origen
             return context
+
+    def get(self, request, *args, **kwargs):
+        self.buscar_producto(request)
+        context = {'origen':self.origen, 'queryset':self.queryset}
+        return render(request, self.template_name, context)
+
+    def buscar_producto(self, request):
+        terminos = request.GET.get('terminos')
+        if terminos and self.queryset is not None:
+            qs = self.queryset.filter(
+                            titulo__icontains=terminos)
+            self.origen = f'Se muestran ({len(qs)}) resultados para "{terminos}"'
+            self.queryset = qs
+
 
 class Producto_vista(DetailView):
     model = Producto
@@ -37,7 +52,7 @@ class Producto_vista(DetailView):
         try:
             val_id = Valoracion.objects.get(producto=producto, autor=user_id).pk
         except (Valoracion.DoesNotExist, TypeError):
-            val_id = False
+            return False
         return val_id
         
           

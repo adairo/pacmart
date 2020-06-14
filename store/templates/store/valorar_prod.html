@@ -1,0 +1,11 @@
+{% extends 'store/principal.html' %}
+{% load static %}
+{% block content %}
+
+    <h2>{{producto.titulo}}</h2>
+    <form method="POST" class="val-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Guardar cambios</button>
+    </form>
+    
+{% endblock content %}

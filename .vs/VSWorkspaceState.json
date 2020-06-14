@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\pacmart",
+    "\\share",
+    "\\static",
+    "\\static\\css",
+    "\\store",
+    "\\store\\migrations",
+    "\\store\\templates",
+    "\\store\\templates\\store"
+  ],
+  "SelectedNode": "\\store\\migrations\\__init__.py",
+  "PreviewInSolutionExplorer": false
+}

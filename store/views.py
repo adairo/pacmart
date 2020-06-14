@@ -13,7 +13,12 @@ from django.contrib import messages
 class Tienda_vista(ListView):
     model = Producto
     template_name = 'store/tienda.html'
-    queryset = Producto.objects.order_by('-fecha_mod')[:6]
+    queryset = Producto.objects.order_by('-fecha_mod')[:]
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['origen'] = "Últimos productos agregados"
+            return context
 
 class Producto_vista(DetailView):
     model = Producto
@@ -61,11 +66,13 @@ class Valorar(View):
     
     form_class = ValForm
     template_name = 'store/valorar_prod.html'
+    
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         producto = get_object_or_404(Producto, pk=kwargs['producto_id'])
-        return render(request, self.template_name, {'form': form, 'producto':producto})
+        context = {'form':form, 'producto':producto}
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)

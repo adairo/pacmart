@@ -13,21 +13,26 @@ from django.contrib import messages
 class Tienda_vista(ListView):
     model = Producto
     template_name = 'store/tienda.html'
-    queryset = Producto.objects.all()
     origen = "Últimos productos agregados"
 
     def get(self, request, *args, **kwargs):
-        self.buscar_producto(request)
-        context = {'origen':self.origen, 'queryset':self.queryset}
+        queryset = self.buscar_producto(request)
+        context = {'origen':self.origen, 'queryset':queryset}
         return render(request, self.template_name, context)
 
     def buscar_producto(self, request):
+        queryset = Producto.objects.order_by('-fecha_cre')
         terminos = request.GET.get('terminos')
-        if terminos and self.queryset is not None:
-            qs = self.queryset.filter(
-                            titulo__icontains=terminos)
-            self.origen = f'Se muestran ({len(qs)}) resultados para "{terminos}"'
-            self.queryset = qs
+        if queryset is not None:
+            if terminos:
+                queryset = queryset.filter(
+                                titulo__icontains=terminos)
+                self.origen = f'Se muestran ({len(queryset)}) resultados para "{terminos}"'
+        else:
+            self.origen = "Aún no hay productos registrados"
+        return queryset
+
+    
 
 
 class Producto_vista(DetailView):

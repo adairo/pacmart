@@ -18,7 +18,7 @@ from django.shortcuts import reverse
 #Agreguen cuantas categorías necesiten para hacer pruebas
 CATEGORIAS =(
             ('IN',  'Indeterminado'),
-            ('EU',  'Electrónicos'),
+            ('EL',  'Electrónicos'),
             ('DS',  'Deportes'),
             ('ED',  'Electrodomésticos'),
             ('LB',  'Libros'),
@@ -39,7 +39,7 @@ class Producto(models.Model):
                                     default='product_thumb_placeholder.png')
 
     categoria   =   models.CharField(choices=CATEGORIAS, 
-                                    max_length=10, 
+                                    max_length=2, 
                                     default='IN')
 
     descripcion =   models.TextField(blank=True, null=True)
@@ -47,9 +47,9 @@ class Producto(models.Model):
     #El campo slug brinda una URL única a cada producto
     #Si este campo se deja vacío ocasiona conflictos incluso en la base de datos. 
     slug        =   models.SlugField(blank=False, null=False)
-      
+
     #Fecha de creación se agrega automáticamente
-    fecha_cre   =   models.DateTimeField(auto_now=True)
+    fecha_cre   =   models.DateTimeField(auto_now_add=True)
     #Fecha de modificación se actualiza automáticamente
     fecha_mod   =   models.DateTimeField(auto_now=True)
 

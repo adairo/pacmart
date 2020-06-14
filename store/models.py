@@ -42,7 +42,7 @@ class Producto(models.Model):
                                     max_length=2, 
                                     default='IN')
 
-    descripcion =   models.TextField(blank=True, null=True)
+    descripcion =   models.TextField(default="Descripción")
 
     #El campo slug brinda una URL única a cada producto
     #Si este campo se deja vacío ocasiona conflictos incluso en la base de datos. 

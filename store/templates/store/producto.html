@@ -1,6 +1,32 @@
 {% extends 'store/principal.html' %}
 {% load static %}
 {% block content %}
+<<<<<<< HEAD
+
+    <h1>{{producto.titulo}}</h1>
+    <p>{{producto.descripcion}}</p>
+
+    {% if not valoracion_id %}
+        <a class="btn btn-primary" href="{% url 'store:new-valorar' producto.id%}">Valorar producto</a>
+    {% else %}
+        <a class="btn btn-primary" href="{% url 'store:edit-valorar' valoracion_id %}">Editar valoración</a>
+    {% endif %}
+    <hr>
+
+{% for val in producto.valoraciones.all %}
+<!-- 'valoraciones' hace referencia al parámetro related_name en el atributo producto de la clase Valoracion en models.py -->
+
+    <div class="valoracion">
+        <div class="date">{{ val.fecha_cre }}</div>
+        <strong>{{ val.autor }}</strong>
+        <p>{{ val.comentario}}</p>
+    </div>
+    <hr>
+
+{% empty %}
+    <p>Este producto aún no tiene comentarios</p>
+{% endfor %}
+=======
  <!--Main layout-->
   <main class="mt-5 pt-4">
     <div class="container dark-grey-text mt-5">
@@ -214,5 +240,6 @@
   </main>
   <!--Main layout-->
 
+>>>>>>> acf3439af0ae57bf815f443222dee8e66c70762b
 
 {% endblock content %}

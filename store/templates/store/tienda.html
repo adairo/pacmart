@@ -11,16 +11,18 @@
 <!-- Estoy casi seguro que ya lo había intentado así muchas veces... -->
 <div class="row">
 
-    {% for producto in object_list %}
+    {% for producto in queryset %}
         <div class="col-lg-4">
             <img class="thumbnail" src="{{producto.imagen.url}}">
             <div class="box-element product">
-                <h6><strong>{{producto.titulo}}</strong></h6>
+                <h5><strong>{{producto.titulo}}</strong></h5>
+                <h6>{{producto.get_categoria_display}}</h6>
+                <h6><strong>${{producto.get_precio}}</strong></h6>
                 <hr>
 
-                <button  class="btn btn-warning">Agregar a carrito</button>
-                <a class="btn btn-info" href="{{producto.get_absolute_url}}">Ver</a>
-                <h4 style="display: inline-block; float: right"><strong>${{producto.precio}}</strong></h4>
+                <button  class="btn btn-success">Agregar a carrito</button>
+                <a class="btn btn-outline-info" href="{{producto.get_absolute_url}}">Ver</a>
+                
             </div>
         </div>
     {% endfor %}

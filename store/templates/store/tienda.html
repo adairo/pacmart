@@ -19,9 +19,14 @@
                 <h6>{{producto.get_categoria_display}}</h6>
                 <h6><strong>${{producto.get_precio}}</strong></h6>
                 <hr>
-
-                <button  class="btn btn-success">Agregar a carrito</button>
-                <a class="btn btn-outline-info" href="{{producto.get_absolute_url}}">Ver</a>
+                <div class="btnsContainer">
+                    <form action="/carrito/" class="col-md-7" method="POST">  {% csrf_token %}
+                        <input type="text" style=" display: none;" name ="idProducto" value="{{producto.id}}">
+                        <input type="text" style=" display: none;" name = "cantidad" value="1">
+                        <button type="submit" class="btn btn-success" >Agregar a carrito</button>
+                    </form>
+                    <a class="btn col-md-2 btn-outline-info" href="{{producto.get_absolute_url}}">Ver</a>
+                </div>
                 
             </div>
         </div>

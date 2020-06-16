@@ -59,15 +59,34 @@ class Producto_vista(DetailView):
 
 @login_required()
 def carrito(request):
-    
-    usrLogueado = User.objects.filter(username = request.user)
-    elCarrito = Carrito.objects.filter(user = usrLogueado[0].id,finalizado = False).first()
+    metodo = "GET"
+# aqui traemos al usuario que esta logueado en la request 
+    ArregloUsrLogueado = User.objects.filter(username = request.user)
+    usrLogueado = ArregloUsrLogueado[0]
+    # aqui traemos el carrito asociado a ese usuario logueado
+    elCarrito = Carrito.objects.filter(user = usrLogueado.id,finalizado = False).first()
 
+
+    if request.method == "POST":
+        metodo = "POST con id = "+ request.POST["idProducto"] + ", y cantidad = "+ request.POST["cantidad"]
+
+        productoExistenteEnCarrito = Producto_carrito.objects.filter(carrito = elCarrito, producto = request.POST["idProducto"])
+        if productoExistenteEnCarrito:
+            # Aqui debemos incrementar ese itemn en tantos como tenga cantidad 
+            productoCarritoAActualizar = Producto_carrito.objects.get(producto = request.POST["idProducto"])
+            productoCarritoAActualizar.cantidad = productoCarritoAActualizar.cantidad + int(request.POST["cantidad"])
+            productoCarritoAActualizar.save()
+        else:
+            # se crea un nuevo producto carrito con ese id de producto
+            elProducto = Producto.objects.get(id = request.POST["idProducto"])
+            nuevoProductoCarrito = Producto_carrito.objects.create(user = usrLogueado, producto = elProducto,carrito = elCarrito,cantidad = int(request.POST["cantidad"]))
+
+    
     productosEnCarrito = Producto_carrito.objects.filter(carrito = elCarrito)
     total = 0
     for item in productosEnCarrito:
         total = total + (item.cantidad * item.producto.precio)
-    context = {"carrito":elCarrito,"items":productosEnCarrito,"total":total}     
+    context = {"carrito":elCarrito,"items":productosEnCarrito,"total":total,"metodo":metodo}     
     return render(request, 'store/carrito.html', context)
 
 def pago(request):

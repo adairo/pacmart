@@ -14,6 +14,27 @@ from django.contrib import messages
 class Tienda_vista(ListView):
     model = Producto
     template_name = 'store/tienda.html'
+    origen = "Últimos productos agregados"
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.buscar_producto(request)
+        context = {'origen':self.origen, 'queryset':queryset}
+        return render(request, self.template_name, context)
+
+    def buscar_producto(self, request):
+        queryset = Producto.objects.order_by('-fecha_cre')
+        terminos = request.GET.get('terminos')
+        if queryset is not None:
+            if terminos:
+                queryset = queryset.filter(
+                                titulo__icontains=terminos)
+                self.origen = f'Se muestran ({len(queryset)}) resultados para "{terminos}"'
+        else:
+            self.origen = "Aún no hay productos registrados"
+        return queryset
+
+    
+
 
 class Producto_vista(DetailView):
     model = Producto
@@ -31,8 +52,8 @@ class Producto_vista(DetailView):
         user_id = self.request.user
         try:
             val_id = Valoracion.objects.get(producto=producto, autor=user_id).pk
-        except Valoracion.DoesNotExist:
-            val_id = False
+        except (Valoracion.DoesNotExist, TypeError):
+            return False
         return val_id
         
 
@@ -78,11 +99,13 @@ class Valorar(View):
     
     form_class = ValForm
     template_name = 'store/valorar_prod.html'
+    
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         producto = get_object_or_404(Producto, pk=kwargs['producto_id'])
-        return render(request, self.template_name, {'form': form, 'producto':producto})
+        context = {'form':form, 'producto':producto}
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)

@@ -10,5 +10,6 @@ media/product_thumbs/Gafas.png
 media/product_thumbs/LG.jpeg
 media/product_thumbs/Smart_watch.jpg
 media/product_thumbs/SmartTv.jpg
-*.sqlite3
 store/migrations/0002_auto_20200615_0056.py
+db.sqlite3
+store/migrations

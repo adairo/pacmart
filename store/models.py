@@ -40,17 +40,17 @@ class Producto(models.Model):
                                     default='product_thumb_placeholder.png')
 
     categoria   =   models.CharField(choices=CATEGORIAS, 
-                                    max_length=10, 
+                                    max_length=2, 
                                     default='IN')
 
-    descripcion =   models.TextField(blank=True, null=True)
+    descripcion =   models.TextField(default="Descripción")
 
     #El campo slug brinda una URL única a cada producto
     #Si este campo se deja vacío ocasiona conflictos incluso en la base de datos. 
     slug        =   models.SlugField(blank=False, null=False)
-      
+
     #Fecha de creación se agrega automáticamente
-    fecha_cre   =   models.DateTimeField(auto_now=True)
+    fecha_cre   =   models.DateTimeField(auto_now_add=True)
     #Fecha de modificación se actualiza automáticamente
     fecha_mod   =   models.DateTimeField(auto_now=True)
 
@@ -64,6 +64,12 @@ class Producto(models.Model):
             return self.descripcion[:74]+"..."
         else:
             return self.descripcion
+    
+    def get_precio(self):
+        if self.precio.is_integer():
+            return int(self.precio)
+        return self.precio
+
 
 class Carrito(models.Model):
     '''La clase Carrito contiene la lista de productos que el cliente ha seleccionado para comprar,

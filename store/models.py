@@ -97,7 +97,7 @@ class Producto_carrito(models.Model):
     user        =   models.ForeignKey(User, on_delete=models.CASCADE)
     finalizado  =   models.BooleanField(default=False)
     producto    =   models.ForeignKey(Producto, on_delete=models.CASCADE)
-    carrito     =   models.ForeignKey(Carrito, on_delete=models.CASCADE, default=None)
+    carrito     =   models.ForeignKey(Carrito, on_delete=models.CASCADE)
     cantidad    =   models.IntegerField(default=1)
     
     def __str__(self):

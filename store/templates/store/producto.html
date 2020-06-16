@@ -35,7 +35,7 @@
 
             <p class="lead">
               <span>$</span><span>{{object.precio}}</span>
-			<!-----Ranking---->
+					<!-----Ranking---->
 					<head>
 					<!-- Font Awesome Icon Library -->
 					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -43,66 +43,60 @@
 					</head>
 
 
-					{% if object.puntuacion == 1 %}
+	{% if val.puntuacion == 1 %}
 					<body>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star "></span>
-					<span class="fa fa-star "></span>
-					<span class="fa fa-star "></span>
-					<span class="fa fa-star "></span>
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span>
+					<span class="float-right"> <span class="fa fa-star checked"></span></span> 
 					</body>
-					{% endif %}
-
-					{% if object.puntuacion == 2 %}
+					{% elif val.puntuacion == 2 %}
 					<body>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star "></span>
-					<span class="fa fa-star "></span>
-					<span class="fa fa-star "></span>
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
 					</body>
-					{% endif %}
-
-					{% if object.puntuacion == 3 %}
+					{% elif val.puntuacion == 3 %}
 					<body>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star "></span>
-					<span class="fa fa-star "></span>
+
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"> <span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
 					</body>
-					{% endif %}
-
-					{% if object.puntuacion == 4 %}
+					{% elif val.puntuacion == 4 %}
 					<body>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star "></span>
+					<span class="float-right"><span class="fa fa-star "></span></span>
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
 					</body>
-					{% endif %}
-
-					{% if object.puntuacion == 5 %}
+					{% elif val.puntuacion == 5 %}
 					<body>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
 					</body>			
 					{% else %}
 					<body>
-					<span class="fa fa-star "></span>
-					<span class="fa fa-star "></span>
-					<span class="fa fa-star "></span>
-					<span class="fa fa-star "></span>
-					<span class="fa fa-star "></span>
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
 					</body>
 					{% endif %}
 
 
 			<!-----Ranking---->
+
 			    </p>
 
             <p>{{object.descripcion}}</p>
@@ -140,42 +134,115 @@
         </div>
         <!--Grid column-->
 
-		<!-----comentary---->
+	 <!--comentario-->
+		
+			<div class="card card-inner">
+            	    <div class="card-body">
+            	        <div class="row">
 
-<div class="container">
-	<div class="card">
-	    <div class="card-body">
-	        <div class="row">
-        	    <div class="col-md-10">
-						<p>
-							{% for val in producto.valoraciones.all %}
+						{% for val in producto.valoraciones.all %}
 									<!-- 'valoraciones' hace referencia al parámetro related_name en el atributo producto de la clase Valoracion en models.py -->
-								<div class="valoracion">
-									<span class="float-right"><i class="text-warning fa fa-star"></i></span>
-									<span class="float-right"><i class="text-warning fa fa-star"></i></span>
-        							<span class="float-right"><i class="text-warning fa fa-star"></i></span>
-        							<span class="float-right"><i class="text-warning fa fa-star"></i></span>
-									<span class="float-right"><i class="text-warning fa fa-star"></i></span>
-									 <strong>{{ val.autor }}</strong>
-									<div class="date">{{ val.fecha_cre }}</div>
+                    	    <div class="col-md-2">
+                    	        <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>
+								<div class="autor text-center "><strong>{{ val.autor }}</strong></div>
+                    	       <p><div class="date text-cente">{{ val.fecha_cre }}</div></p>
+                    	    </div>
+
+
+                    	    <div class="col-md-10">
+                    <p>        
+					{% if val.puntuacion == 1 %}
+					<body>
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span>
+					<span class="float-right"> <span class="fa fa-star checked"></span></span> 
+					</body>
+					{% elif val.puntuacion == 2 %}
+					<body>
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					</body>
+					{% elif val.puntuacion == 3 %}
+					<body>
+
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"> <span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					</body>
+					{% elif val.puntuacion == 4 %}
+					<body>
+					<span class="float-right"><span class="fa fa-star "></span></span>
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					</body>
+					{% elif val.puntuacion == 5 %}
+					<body>
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					</body>			
+					{% else %}
+					<body>
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					</body>
+					{% endif %}
+								</p>		
+
+											     
+					{% if val.puntuacion == 1 %}
+					<span class="badge brown mr-2">Muy malo</span>
+					{% elif val.puntuacion == 2 %}
+					<span class="badge brown mr-2">Malo</span>
+					{% elif val.puntuacion == 3 %}
+					<span class="badge brown mr-2">Regular</span>
+					{% elif val.puntuacion == 4 %}
+					<span class="badge brown mr-2">Bueno</span>
+					{% elif val.puntuacion == 5 %}
+					<span class="badge brown mr-2">Muy bueno</span>
+					{% else %}
+				
+					{% endif %}
 									<p>{{ val.comentario}}</p>
-									<hr>
-								</div>
-									
-									{% empty %}
-									
+									    <p>
+										<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+										<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+                    	            <a class="float-right btn text-white btn-danger  ml-2"><i class="fa fa-thumbs-down"></i> No me gusta</a>
+                    	            <a class="float-right btn text-white btn-success"><i class="fa fa-thumbs-up"></i> Me gusta</a>
+                    	       </p>
+									<span class="badge brown mr-2">Compra verificada</span>
+									<hr>            	    
+                    	    </div>
+							{% empty %}
+							
+
+							<div class="col-md-10">
 										<p>Este producto aún no tiene comentarios</p>
-								
-									
+							</div>
 								{% endfor %}
 
-						</p>
 
-        		</div>
-			</div>
-	   </div>
-		<!-----comentary---->
-</div>
+
+            	        </div>
+            	    </div>
+	            </div>
+      <!--comentario-->
+
       <!--Grid row--> 
   </main>
   <!--Main layout-->

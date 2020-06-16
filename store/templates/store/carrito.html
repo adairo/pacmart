@@ -1,52 +1,71 @@
 {% extends 'store/principal.html' %}
 {% load static %}
 {% block content %}
+
 	<div class="row">
-		<div class="col-lg-12">
-			<div class="box-element">
-
+		<div class="col-md-12">
+			{%if carrito%}
+				<br>
 				<a  class="btn btn-outline-dark" href="{% url 'store:tienda' %}">&#x2190; Seguir comprando</a>
-
 				<br>
 				<br>
-				<table class="table">
-					<tr>
-						<th><h5>Productos: <strong>3</strong></h5></th>
-						<th><h5>Total:<strong> $42</strong></h5></th>
-						<th>
-							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'store:pago' %}">Crear pedido</a>
-						</th>
-					</tr>
-				</table>
+				<h3>Mi orden</h3>
+				<div class="row rowCardContainer">
+					<div class="col-md-6">
+						{%for item in items%}
+							<div class="card mb-3 box-element" style="max-width: 540px;">
+								<div class="row no-gutters">
+									<div class="col-md-4 imgContainer">
+										<img src="{{item.producto.imagen.url}}" class="card-img" alt="...">
+									</div>
+									<div class="col-md-8">
+										<div class="card-body">
+											<h5 class="card-title">{{item.producto.titulo}}</h5>
+											
+											<p class="card-text">Precio: <strong>${{item.producto.precio}}</strong></p>
+											<p class="card-text">Cantidad: <strong>{{item.cantidad}}</strong></p>
+											<p class="card-text"><small class="text-muted">{{item.producto.get_short_description}}</small></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						{%endfor%}
+					</div>
+					<div class="col-md-6">
+						<div class="box-element">
+							<!-- <a  class="btn btn-outline-dark" href="{% url 'store:carrito' %}">&#x2190; Regresar a carrito</a> -->
+							<h3>Resumen de pedido</h3>
+							<hr>
+							{%for item in items%}
 
-			</div>
-
-			<br>
-			<div class="box-element">
-				<div class="cart-row">
-					<div style="flex:2"></div>
-					<div style="flex:2"><strong>Producto</strong></div>
-					<div style="flex:1"><strong>Precio</strong></div>
-					<div style="flex:1"><strong>Cantidad</strong></div>
-					<div style="flex:1"><strong>Total</strong></div>
-				</div>
-				
-				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{% static 'images/placeholder.png' %}"></div>
-					<div style="flex:2"><p>Producto 1</p></div>
-					<div style="flex:1"><p>$15</p></div>
-					<div style="flex:1">
-						<p class="quantity">2</p>
-						<div class="quantity">
-							<img class="chg-quantity" src="{% static  'images/arrow-up.png' %}">
-					
-							<img class="chg-quantity" src="{% static  'images/arrow-down.png' %}">
+								<div class="cart-row">
+									<div style="flex:2"><p>{{item.producto.titulo}}</p></div>
+									<div style="flex:1"><p>${{item.producto.precio}}</p></div>
+									<div style="flex:1"><p>x{{item.cantidad}}</p></div>
+									
+									<div style="flex:1"><p><strong>${% widthratio item.cantidad 1 item.producto.precio %}</strong></p></div>
+								</div>
+							{%endfor%}
+							<div class="row">
+								<div class="col-md-6">
+									<h5>Total: <strong>${{total}}</strong></h5>
+								</div>
+								<div class="col-md-6">
+									<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'store:pago' %}">Crear pedido</a>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div style="flex:1"><p>$32</p></div>
 				</div>
 
-			</div>
+			{%else%}
+				<div class="jumbotron">
+					<h1 class="display-4">Carrito vacio!</h1>
+					<p class="lead">Selecciona algun producto de la tienda y agregalo a tu carrito</p>
+					
+					<a class="btn btn-primary btn-lg"  href="{% url 'store:tienda' %}" role="button">Seguir comprando</a>
+				</div>
+			{%endif%}
 		</div>
 	</div>
 {% endblock content %}

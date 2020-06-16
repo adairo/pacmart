@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.http import HttpResponse
-from .models import Producto, Valoracion
+from django.contrib.auth.decorators import login_required
+from .models import Producto, Valoracion,Carrito,Producto_carrito
 from .forms import ValForm
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -34,13 +35,30 @@ class Producto_vista(DetailView):
             val_id = False
         return val_id
         
-          
+
+@login_required()
 def carrito(request):
-    context = {}
+    
+    usrLogueado = User.objects.filter(username = request.user)
+    elCarrito = Carrito.objects.filter(user = usrLogueado[0].id,finalizado = False).first()
+
+    productosEnCarrito = Producto_carrito.objects.filter(carrito = elCarrito)
+    total = 0
+    for item in productosEnCarrito:
+        total = total + (item.cantidad * item.producto.precio)
+    context = {"carrito":elCarrito,"items":productosEnCarrito,"total":total}     
     return render(request, 'store/carrito.html', context)
 
 def pago(request):
-    context = {}
+    usrLogueado = User.objects.filter(username = request.user)
+    elCarrito = Carrito.objects.filter(user = usrLogueado[0].id,finalizado = False).first()
+
+    productosEnCarrito = Producto_carrito.objects.filter(carrito = elCarrito)
+    total = 0
+    for item in productosEnCarrito:
+        total = total + (item.cantidad * item.producto.precio)
+    context = {"carrito":elCarrito,"items":productosEnCarrito,"total":total}     
+    
     return render(request, 'store/pago.html', context)
 
 def iniciar_sesion(request):

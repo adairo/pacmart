@@ -59,21 +59,11 @@ class Producto(models.Model):
 
     def get_absolute_url(self):
         return reverse('store:producto', kwargs={'slug':self.slug})
-
- 
-class Producto_carrito(models.Model):
-    '''Para poder llevar a cabo un pedido, es necesario agregar artículos al carrito,
-       La clase Producto_carrito nos permite representar un producto dentro del carrito
-       además de la cantidad asociada a ese producto.'''
-       
-    user        =   models.ForeignKey(User, on_delete=models.CASCADE)
-    finalizado  =   models.BooleanField(default=False)
-    producto    =   models.ForeignKey(Producto, on_delete=models.CASCADE)
-    cantidad    =   models.IntegerField(default=1)
-    
-    def __str__(self):
-        return f"{self.producto.titulo} ({self.cantidad})"
-
+    def get_short_description(self):
+        if len(self.descripcion) > 77:
+            return self.descripcion[:74]+"..."
+        else:
+            return self.descripcion
 
 class Carrito(models.Model):
     '''La clase Carrito contiene la lista de productos que el cliente ha seleccionado para comprar,
@@ -83,8 +73,6 @@ class Carrito(models.Model):
 
     user        =   models.ForeignKey(User, on_delete=models.CASCADE)
     finalizado  =   models.BooleanField(default=False)
-    codigo      =   models.CharField(max_length=20, blank=True, null=True)
-    productos   =   models.ManyToManyField(Producto_carrito)
     fecha_crea  =   models.DateTimeField(default=timezone.now)
     fecha_fin   =   models.DateTimeField(null=True)
     dir_entrega =   models.ForeignKey('Direccion', on_delete=models.SET_NULL, blank=True, null=True)
@@ -92,6 +80,19 @@ class Carrito(models.Model):
     def __str__(self):
         return f"carrito de: {self.user.username}"
 
+ 
+class Producto_carrito(models.Model):
+    '''Para poder llevar a cabo un pedido, es necesario agregar artículos al carrito,
+       La clase Producto_carrito nos permite representar un producto dentro del carrito
+       además de la cantidad asociada a ese producto.'''
+    user        =   models.ForeignKey(User, on_delete=models.CASCADE)
+    finalizado  =   models.BooleanField(default=False)
+    producto    =   models.ForeignKey(Producto, on_delete=models.CASCADE)
+    carrito     =   models.ForeignKey(Carrito, on_delete=models.CASCADE)
+    cantidad    =   models.IntegerField(default=1)
+    
+    def __str__(self):
+        return f"{self.producto.titulo} ({self.cantidad})"
 
 class Direccion(models.Model):
     user        =   models.ForeignKey(User, on_delete=models.CASCADE)

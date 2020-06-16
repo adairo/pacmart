@@ -39,14 +39,22 @@
 				<hr>
 				<h3>Resumen de pedido</h3>
 				<hr>
-				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{% static 'images/placeholder.png' %}"></div>
-					<div style="flex:2"><p>Product 1</p></div>
-					<div style="flex:1"><p>$20.00</p></div>
-					<div style="flex:1"><p>x2</p></div>
+				{%for item in items%}
+
+					<div class="cart-row">
+						<div style="flex:2"><p>{{item.producto.titulo}}</p></div>
+						<div style="flex:1"><p>${{item.producto.precio}}</p></div>
+						<div style="flex:1"><p>x{{item.cantidad}}</p></div>
+						
+						<div style="flex:1"><p><strong>${% widthratio item.cantidad 1 item.producto.precio %}</strong></p></div>
+					</div>
+				{%endfor%}
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1">
+
+						<h5>Total: <strong>${{total}}</strong></h5>
+					</div>
 				</div>
-				<h5>Items:   2</h5>
-				<h5>Total:   $4</h5>
 			</div>
 		</div>
 	</div>

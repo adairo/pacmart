@@ -35,6 +35,7 @@ class Producto(models.Model):
 
     titulo      =   models.CharField(max_length=30)
     precio      =   models.FloatField(default=0)
+    promedio      =   models.FloatField(default=0)
     codigo      =   models.CharField(max_length=10, blank=True)
     imagen      =   models.ImageField(upload_to='product_thumbs', 
                                     default='product_thumb_placeholder.png')
@@ -79,6 +80,14 @@ class Producto(models.Model):
         if self.precio.is_integer():
             return int(self.precio)
         return self.precio
+		
+    def get_promedio(self):
+        for comentario in valoracion:
+            sumas=sumas+item.comentario
+            suma =suma+choices.puntuacion
+        promedio =suma/sumas
+        return int(self.promedio)
+        return self.promedio
 
 
 class Carrito(models.Model):

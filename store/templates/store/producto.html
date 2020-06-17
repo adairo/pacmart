@@ -43,7 +43,7 @@
 					</head>
 
 
-	{% if val.puntuacion == 1 %}
+					{% if val.puntuacion == 1 %}
 					<body>
 					<span class="float-right"><span class="fa fa-star "></span></span> 
 					<span class="float-right"><span class="fa fa-star "></span></span> 
@@ -221,10 +221,17 @@
 									    <p>
 										<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 										<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+										<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+									{% if val.puntuacion < 2 %}
                     	            <a class="float-right btn text-white btn-danger  ml-2"><i class="fa fa-thumbs-down"></i> No me gusta</a>
+									{% elif val.puntuacion == 3 %}
+									<a class="float-right btn text-white btn-warning"><i class="fa fa-hand-lizard-o"></i> Regular</a>
+									{% else %}
                     	            <a class="float-right btn text-white btn-success"><i class="fa fa-thumbs-up"></i> Me gusta</a>
+									{% endif %}
                     	       </p>
+							 
 									<span class="badge brown mr-2">Compra verificada</span>
 									<hr>            	    
                     	    </div>

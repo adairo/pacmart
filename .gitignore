@@ -1,15 +1,4 @@
 *.pyc
-media/Bicicleta.jpg
-media/Gafas.png
-media/LG.jpeg
-media/Smart watch.jpg
-media/SmartTv.jpg
-media/product_thumbs/Bicicleta_Yoqvt2n.jpg
-media/product_thumbs/Bicicleta.jpg
-media/product_thumbs/Gafas.png
-media/product_thumbs/LG.jpeg
-media/product_thumbs/Smart_watch.jpg
-media/product_thumbs/SmartTv.jpg
-store/migrations/0002_auto_20200615_0056.py
+media
 db.sqlite3
 store/migrations

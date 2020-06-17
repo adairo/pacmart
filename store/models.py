@@ -61,7 +61,7 @@ class Producto(models.Model):
         return reverse('store:producto', kwargs={'slug':self.slug})
 
     def get_short_description(self):
-        ''' Regresa un fragmento de la descripción de un producto, para ser 
+        ''' Regresa una versión reducida de la descripción, para ser 
         mostrada en la pantalla carrito'''
         
         if self.descripcion:
@@ -81,12 +81,21 @@ class Producto(models.Model):
         return self.precio
 		
     def get_promedio(self):
-        for comentario in valoracion:
-            sumas=sumas+item.comentario
-            suma =suma+choices.puntuacion
-        promedio =suma/sumas
-        return int(self.promedio)
-        return self.promedio
+        pass
+        # for comentario in valoracion:
+        #     sumas=sumas+item.comentario
+        #     suma =suma+choices.puntuacion
+        # promedio =suma/sumas
+        # return int(self.promedio)
+        # return self.promedio
+
+
+class Producto_comprado(models.Model):
+    user        = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comprados')
+    producto    = models.ForeignKey(Producto, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f"producto:{self.producto.titulo}, comprado por:{self.user.username}"
 
 
 class Carrito(models.Model):
@@ -117,6 +126,7 @@ class Producto_carrito(models.Model):
     
     def __str__(self):
         return f"{self.producto.titulo} ({self.cantidad})"
+
 
 class Direccion(models.Model):
     user        =   models.ForeignKey(User, on_delete=models.CASCADE)

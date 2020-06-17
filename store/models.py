@@ -26,7 +26,7 @@ CATEGORIAS =(
             ('AU',  'Audio'),
             ('VI',  'Video'),
             ('LB',  'Linea blanca'),
-            ('Ot',  'Otros'),
+            ('OT',  'Otros'),
 )
 
 class Producto(models.Model):
@@ -35,7 +35,6 @@ class Producto(models.Model):
 
     titulo      =   models.CharField(max_length=30)
     precio      =   models.FloatField(default=0)
-    promedio      =   models.FloatField(default=0)
     codigo      =   models.CharField(max_length=10, blank=True)
     imagen      =   models.ImageField(upload_to='product_thumbs', 
                                     default='product_thumb_placeholder.png')

@@ -59,7 +59,11 @@ class Producto(models.Model):
 
     def get_absolute_url(self):
         return reverse('store:producto', kwargs={'slug':self.slug})
+
     def get_short_description(self):
+        ''' Regresa un fragmento de la descripción de un producto, para ser 
+        mostrada en la pantalla carrito'''
+        
         if self.descripcion:
             if len(self.descripcion) > 77:
                 return self.descripcion[:74]+"..."
@@ -69,6 +73,9 @@ class Producto(models.Model):
             return "Producto sin descripcion..."
     
     def get_precio(self):
+        '''Regresa el precio expresado como un entero, 
+           siempre y cuando no haya pérdida de info'''
+
         if self.precio.is_integer():
             return int(self.precio)
         return self.precio

@@ -41,50 +41,7 @@
 					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 					<style>.checked { color: orange;}</style>
 					</head>
-
-
-					{% if val.puntuacion == 1 %}
-					<body>
-					<span class="float-right"><span class="fa fa-star "></span></span> 
-					<span class="float-right"><span class="fa fa-star "></span></span> 
-					<span class="float-right"><span class="fa fa-star "></span></span> 
-					<span class="float-right"><span class="fa fa-star "></span></span>
-					<span class="float-right"> <span class="fa fa-star checked"></span></span> 
-					</body>
-					{% elif val.puntuacion == 2 %}
-					<body>
-					<span class="float-right"><span class="fa fa-star "></span></span> 
-					<span class="float-right"><span class="fa fa-star "></span></span> 
-					<span class="float-right"><span class="fa fa-star "></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					</body>
-					{% elif val.puntuacion == 3 %}
-					<body>
-
-					<span class="float-right"><span class="fa fa-star "></span></span> 
-					<span class="float-right"><span class="fa fa-star "></span></span> 
-					<span class="float-right"> <span class="fa fa-star checked"></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					</body>
-					{% elif val.puntuacion == 4 %}
-					<body>
-					<span class="float-right"><span class="fa fa-star "></span></span>
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					</body>
-					{% elif val.puntuacion == 5 %}
-					<body>
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					<span class="float-right"><span class="fa fa-star checked"></span></span> 
-					</body>			
-					{% else %}
+					{% if producto.promedio < 1  %}
 					<body>
 					<span class="float-right"><span class="fa fa-star "></span></span> 
 					<span class="float-right"><span class="fa fa-star "></span></span> 
@@ -93,6 +50,54 @@
 					<span class="float-right"><span class="fa fa-star "></span></span> 
 					</body>
 					{% endif %}
+			
+					{% if producto.promedio >= 1 and producto.promedio < 2 %}
+					<body>
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span>
+					<span class="float-right"> <span class="fa fa-star checked"></span></span> 
+					</body>
+					{% endif %}
+
+					{% if producto.promedio >= 2 and producto.promedio < 3  %}
+					<body>
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					</body>
+					{% endif %}
+					{% if producto.promedio >= 3 and producto.promedio < 4  %}
+					<body>
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"><span class="fa fa-star "></span></span> 
+					<span class="float-right"> <span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					</body>
+					{% endif %}
+					{% if producto.promedio >= 4 and producto.promedio < 5  %}
+					<body>
+					<span class="float-right"><span class="fa fa-star "></span></span>
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					</body>
+					{% endif %}
+					{% if val.puntuacion > 5 %}
+					<body>
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					<span class="float-right"><span class="fa fa-star checked"></span></span> 
+					</body>			
+					{% endif %}
+					
 
 
 			<!-----Ranking---->

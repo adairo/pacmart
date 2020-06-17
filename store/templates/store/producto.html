@@ -129,6 +129,7 @@
       <!--Grid row-->
       <div class="row d-flex justify-content-center wow fadeIn">
         <!--Grid column-->
+		{% for val in producto.valoraciones.all %}
         <div class="col-md-6 text-center">
           <h4 class="my-4 h4">Comentarios</h4>
         </div>
@@ -140,7 +141,7 @@
             	    <div class="card-body">
             	        <div class="row">
 
-						{% for val in producto.valoraciones.all %}
+						
 									<!-- 'valoraciones' hace referencia al parámetro related_name en el atributo producto de la clase Valoracion en models.py -->
                     	    <div class="col-md-2">
                     	        <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>
@@ -223,7 +224,7 @@
 										<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 										<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-									{% if val.puntuacion < 2 %}
+									{% if val.puntuacion <= 2 %}
                     	            <a class="float-right btn text-white btn-danger  ml-2"><i class="fa fa-thumbs-down"></i> No me gusta</a>
 									{% elif val.puntuacion == 3 %}
 									<a class="float-right btn text-white btn-warning"><i class="fa fa-hand-lizard-o"></i> Regular</a>
@@ -238,8 +239,8 @@
 							{% empty %}
 							
 
-							<div class="col-md-10">
-										<p>Este producto aún no tiene comentarios</p>
+							  <div class="col-md-6 text-center">
+							 <h4 class="my-4 h4">No hay comentarios</h4>
 							</div>
 								{% endfor %}
 

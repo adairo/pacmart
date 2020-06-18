@@ -111,12 +111,16 @@
 			  <input type="number" value="1" min="1" name="cantidad" aria-label="Search" class="form-control" style="width: 100px">
 			  <input type="text" value="{{object.id}}" name="idProducto" style="display: none;">
               <button class="btn btn-success" type="submit">Agregar al carrito<i class="shopping ml-1"></i>
-              </button>
-			   {% if not valoracion_id %}
-				  <a class="btn btn-outline-info" style="margin-left: 10px" href="{% url 'store:new-valorar' producto.id%}">Valorar producto</a>
-				 {% else %}
-				   <a class="btn btn-outline-info" style="margin-left: 10px" href="{% url 'store:edit-valorar' valoracion_id %}">Editar valoración</a>
-				{% endif %}
+			  </button>
+			  
+			  {% if comprado %}
+					{% if not valoracion_id %}
+					<a class="btn btn-outline-info" style="margin-left: 10px" href="{% url 'store:new-valorar' producto.id%}">Valorar producto</a>
+					{% else %}
+					<a class="btn btn-outline-info" style="margin-left: 10px" href="{% url 'store:edit-valorar' valoracion_id %}">Editar valoración</a>
+					{% endif %}
+			  {% endif %}
+			   
 
             </form>
 

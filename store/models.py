@@ -26,7 +26,7 @@ CATEGORIAS =(
             ('AU',  'Audio'),
             ('VI',  'Video'),
             ('LB',  'Linea blanca'),
-            ('Ot',  'Otros'),
+            ('OT',  'Otros'),
 )
 
 class Producto(models.Model):
@@ -35,7 +35,6 @@ class Producto(models.Model):
 
     titulo      =   models.CharField(max_length=30)
     precio      =   models.FloatField(default=0)
-    promedio      =   models.FloatField(default=0)
     codigo      =   models.CharField(max_length=10, blank=True)
     imagen      =   models.ImageField(upload_to='product_thumbs', 
                                     default='product_thumb_placeholder.png')
@@ -60,7 +59,11 @@ class Producto(models.Model):
 
     def get_absolute_url(self):
         return reverse('store:producto', kwargs={'slug':self.slug})
+
     def get_short_description(self):
+        ''' Regresa una versión reducida de la descripción, para ser 
+        mostrada en la pantalla carrito'''
+        
         if self.descripcion:
             if len(self.descripcion) > 77:
                 return self.descripcion[:74]+"..."
@@ -70,17 +73,29 @@ class Producto(models.Model):
             return "Producto sin descripcion..."
     
     def get_precio(self):
+        '''Regresa el precio expresado como un entero, 
+           siempre y cuando no haya pérdida de info'''
+
         if self.precio.is_integer():
             return int(self.precio)
         return self.precio
 		
     def get_promedio(self):
-        for comentario in valoracion:
-            sumas=sumas+item.comentario
-            suma =suma+choices.puntuacion
-        promedio =suma/sumas
-        return int(self.promedio)
-        return self.promedio
+        pass
+        # for comentario in valoracion:
+        #     sumas=sumas+item.comentario
+        #     suma =suma+choices.puntuacion
+        # promedio =suma/sumas
+        # return int(self.promedio)
+        # return self.promedio
+
+
+class Producto_comprado(models.Model):
+    user        = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comprados')
+    producto    = models.ForeignKey(Producto, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f"producto:{self.producto.titulo}, comprado por:{self.user.username}"
 
 
 class Carrito(models.Model):
@@ -106,11 +121,12 @@ class Producto_carrito(models.Model):
     user        =   models.ForeignKey(User, on_delete=models.CASCADE)
     finalizado  =   models.BooleanField(default=False)
     producto    =   models.ForeignKey(Producto, on_delete=models.CASCADE)
-    carrito     =   models.ForeignKey(Carrito, on_delete=models.CASCADE, default=None)
+    carrito     =   models.ForeignKey(Carrito, on_delete=models.CASCADE)
     cantidad    =   models.IntegerField(default=1)
     
     def __str__(self):
         return f"{self.producto.titulo} ({self.cantidad})"
+
 
 class Direccion(models.Model):
     user        =   models.ForeignKey(User, on_delete=models.CASCADE)

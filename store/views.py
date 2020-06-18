@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Producto, Valoracion,Carrito,Producto_carrito,Direccion
+from .models import Producto, Valoracion,Carrito,Producto_carrito, Producto_comprado
 from .forms import ValForm
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -12,55 +12,81 @@ from django.contrib import messages
 
 
 class Tienda_vista(ListView):
-    model = Producto
     template_name = 'store/tienda.html'
     origen = "Últimos productos agregados"
+    queryset = Producto.objects.order_by('-fecha_cre')
 
     def get(self, request, *args, **kwargs):
-        queryset = self.buscar_producto(request)
-        context = {'origen':self.origen, 'queryset':queryset}
-        return render(request, self.template_name, context)
-
-    def buscar_producto(self, request):
-        queryset = Producto.objects.order_by('-fecha_cre')
         terminos = request.GET.get('terminos')
-        if queryset is not None:
-            if terminos:
-                queryset = queryset.filter(
-                                titulo__icontains=terminos)
-                self.origen = f'Se muestran ({len(queryset)}) resultados para "{terminos}"'
+
+        if self.queryset is not None:
+            if terminos is not None:
+               buscar_producto(terminos)
         else:
             self.origen = "Aún no hay productos registrados"
-        return queryset
+
+        context = {'origen':self.origen, 'queryset':self.queryset}
+        return render(request, self.template_name, context)
+
+
+    def buscar_producto(self, terminos):
+        resultados = self.queryset.filter(
+                        titulo__icontains=terminos)
+        if resultados is not None:     
+            self.origen = f'Se muestran ({len(queryset)}) resultados para "{terminos}"'
+        else:
+            self.origen = f'No se encontraron coincidencias para ("{terminos})"'
 
     
-
-
 class Producto_vista(DetailView):
     model = Producto
     context_object_name = 'producto'
     template_name = 'store/producto.html'
+    producto_comprado = False
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['valoracion_id'] = self.evaluado()
+        if self.verificar_compra():
+            self.producto_comprado = True
+            context['valoracion_id'] = self.evaluado()
+
+        context['comprado'] = self.producto_comprado
         return context
 
     def evaluado(self):
-        #las siguientes dos líneas me llevaron horas de documentación ._.
+        '''Determina si el usuario ya ha escrito una valoración 
+        para el producto en cuestion'''
+
         producto = self.get_object()
         user_id = self.request.user
         try:
-            val_id = Valoracion.objects.get(producto=producto, autor=user_id).pk
+            val_id = Valoracion.objects.get(producto=producto, 
+                autor=user_id).pk
+
         except (Valoracion.DoesNotExist, TypeError):
             return False
         return val_id
-        
+
+    def verificar_compra(self):
+        '''Determina si un producto ha sido comprado por el usuario que está visitando
+        la página de ese producto '''
+
+        usuario = self.request.user
+        producto = self.get_object()
+        comprado = False
+        prod_comprados = usuario.comprados.all()
+       
+        for prod_c in prod_comprados:
+            if prod_c.producto.pk == producto.pk:
+                comprado = True
+
+        return comprado
+
 
 @login_required()
 def carrito(request):
     metodo = "GET"
-# aqui traemos al usuario que esta logueado en la request 
+    # aqui traemos al usuario que esta logueado en la request 
     ArregloUsrLogueado = User.objects.filter(username = request.user)
     usrLogueado = ArregloUsrLogueado[0]
     # aqui traemos el carrito asociado a ese usuario logueado
@@ -85,13 +111,13 @@ def carrito(request):
             elProducto = Producto.objects.get(id = request.POST["idProducto"])
             nuevoProductoCarrito = Producto_carrito.objects.create(user = usrLogueado, producto = elProducto,carrito = elCarrito,cantidad = int(request.POST["cantidad"]))
 
-    
     productosEnCarrito = Producto_carrito.objects.filter(carrito = elCarrito)
     total = 0
     for item in productosEnCarrito:
         total = total + (item.cantidad * item.producto.precio)
     context = {"carrito":elCarrito,"items":productosEnCarrito,"total":total,"metodo":metodo}     
     return render(request, 'store/carrito.html', context)
+
 
 def pago(request):
     usrLogueado = User.objects.filter(username = request.user)
@@ -106,13 +132,35 @@ def pago(request):
     misDirecciones = "d"
     return render(request, 'store/pago.html', context)
 
+
+def agregar_a_comprados(request, productos):
+    '''Para cada compra realizada por un cliente, este método recibe un queryset
+    que contiene  los productos del carrito que fue finalizado'''
+
+    #la forma de obtener referencias de usuario y producto además de ciertos aspectos
+    # de este método pueden variar según el lugar donde sean usadas, esto es una guía
+
+    usuario = request.user
+
+    #el campo 'comprados' hace referencia al parámetro 'related_names' en el atributo user 
+    #de la clase Producto_comprado
+    prod_comprados = usuario.comprados.all()
+ 
+    for producto_del_carrito in productos:
+        if producto_del_carrito not in prod_comprados:
+            nuevo_comprado = Producto_comprado(user=usuario, producto=producto_del_carrito)
+            nuevo_comprado.save()
+    
+
 def iniciar_sesion(request):
     context = {'titulo':'Iniciar sesión'}
     return render(request, 'store/iniciar_sesion.html', context)
 
+
 def crear_cuenta(request):
     context = {'titulo':'Crear cuenta'}
     return render(request, 'store/crear_cuenta.html', context)
+
 
 def pedidos(request):
     context = {'titulo':'Mis pedidos'}

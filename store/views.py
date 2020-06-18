@@ -20,8 +20,8 @@ class Tienda_vista(ListView):
         terminos = request.GET.get('terminos')
 
         if self.queryset is not None:
-            if terminos is not None:
-               buscar_producto(terminos)
+            if terminos:
+               self.buscar_producto(terminos)
         else:
             self.origen = "Aún no hay productos registrados"
 
@@ -33,7 +33,7 @@ class Tienda_vista(ListView):
         resultados = self.queryset.filter(
                         titulo__icontains=terminos)
         if resultados is not None:     
-            self.origen = f'Se muestran ({len(queryset)}) resultados para "{terminos}"'
+            self.origen = f'Se muestran ({len(self.queryset)}) resultados para "{terminos}"'
         else:
             self.origen = f'No se encontraron coincidencias para ("{terminos})"'
 

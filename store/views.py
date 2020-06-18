@@ -12,51 +12,57 @@ from django.contrib import messages
 
 
 class Tienda_vista(ListView):
-    model = Producto
     template_name = 'store/tienda.html'
     origen = "Últimos productos agregados"
+    queryset = Producto.objects.order_by('-fecha_cre')
 
     def get(self, request, *args, **kwargs):
-        queryset = self.buscar_producto(request)
-        context = {'origen':self.origen, 'queryset':queryset}
-        return render(request, self.template_name, context)
-
-    def buscar_producto(self, request):
-        queryset = Producto.objects.order_by('-fecha_cre')
         terminos = request.GET.get('terminos')
-        if queryset is not None:
-            if terminos:
-                queryset = queryset.filter(
-                                titulo__icontains=terminos)
-                self.origen = f'Se muestran ({len(queryset)}) resultados para "{terminos}"'
+
+        if self.queryset is not None:
+            if terminos is not None:
+               buscar_producto(terminos)
         else:
             self.origen = "Aún no hay productos registrados"
-        return queryset
+
+        context = {'origen':self.origen, 'queryset':self.queryset}
+        return render(request, self.template_name, context)
+
+
+    def buscar_producto(self, terminos):
+        resultados = self.queryset.filter(
+                        titulo__icontains=terminos)
+        if resultados is not None:     
+            self.origen = f'Se muestran ({len(queryset)}) resultados para "{terminos}"'
+        else:
+            self.origen = f'No se encontraron coincidencias para ("{terminos})"'
 
     
 class Producto_vista(DetailView):
     model = Producto
     context_object_name = 'producto'
     template_name = 'store/producto.html'
+    producto_comprado = False
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        comprado = False
         if self.verificar_compra():
-            comprado = True
-            if self.evaluado():
-                print('producto evaluado')
-                context['valoracion_id'] = self.evaluado()
-        context['comprado'] = comprado
+            self.producto_comprado = True
+            context['valoracion_id'] = self.evaluado()
+
+        context['comprado'] = self.producto_comprado
         return context
 
     def evaluado(self):
-        '''Determina si el usuario ya ha escrito una valoración para el producto en cuestion'''
+        '''Determina si el usuario ya ha escrito una valoración 
+        para el producto en cuestion'''
 
         producto = self.get_object()
         user_id = self.request.user
         try:
-            val_id = Valoracion.objects.get(producto=producto, autor=user_id).pk
+            val_id = Valoracion.objects.get(producto=producto, 
+                autor=user_id).pk
+
         except (Valoracion.DoesNotExist, TypeError):
             return False
         return val_id

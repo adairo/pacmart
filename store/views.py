@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Producto, Valoracion,Carrito,Producto_carrito
+from .models import Producto, Valoracion,Carrito,Producto_carrito,Direccion
 from .forms import ValForm
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -65,7 +65,8 @@ def carrito(request):
     usrLogueado = ArregloUsrLogueado[0]
     # aqui traemos el carrito asociado a ese usuario logueado
     elCarrito = Carrito.objects.filter(user = usrLogueado.id,finalizado = False).first()
-
+    if not elCarrito:
+        elCarrito = Carrito.objects.create(user= usrLogueado)
 
     if request.method == "POST":
         metodo = "POST con id = "+ request.POST["idProducto"] + ", y cantidad = "+ request.POST["cantidad"]
@@ -75,7 +76,10 @@ def carrito(request):
             # Aqui debemos incrementar ese itemn en tantos como tenga cantidad 
             productoCarritoAActualizar = Producto_carrito.objects.get(producto = request.POST["idProducto"])
             productoCarritoAActualizar.cantidad = productoCarritoAActualizar.cantidad + int(request.POST["cantidad"])
-            productoCarritoAActualizar.save()
+            if productoCarritoAActualizar.cantidad < 1:
+                productoCarritoAActualizar.delete()
+            else:
+                productoCarritoAActualizar.save()
         else:
             # se crea un nuevo producto carrito con ese id de producto
             elProducto = Producto.objects.get(id = request.POST["idProducto"])
@@ -99,6 +103,7 @@ def pago(request):
         total = total + (item.cantidad * item.producto.precio)
     context = {"carrito":elCarrito,"items":productosEnCarrito,"total":total}     
     
+    misDirecciones = "d"
     return render(request, 'store/pago.html', context)
 
 def iniciar_sesion(request):

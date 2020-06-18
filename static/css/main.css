@@ -21,6 +21,11 @@ h1,h2,h3,h4,h5,h6{
 	display: flex;
     justify-content: space-between;
 }
+.btnUpdateCantidad{
+	width: 25px;
+	height: 25px;
+	padding: 0% !important
+}
 .imgContainer{
 	display: flex;
     align-items: center;

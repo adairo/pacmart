@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Producto, Valoracion,Carrito,Producto_carrito, Producto_comprado
+from .models import Producto, Valoracion,Carrito,Producto_carrito, Producto_comprado,Direccion
 from .forms import ValForm
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -100,7 +100,7 @@ def carrito(request):
         productoExistenteEnCarrito = Producto_carrito.objects.filter(carrito = elCarrito, producto = request.POST["idProducto"])
         if productoExistenteEnCarrito:
             # Aqui debemos incrementar ese itemn en tantos como tenga cantidad 
-            productoCarritoAActualizar = Producto_carrito.objects.get(producto = request.POST["idProducto"])
+            productoCarritoAActualizar = productoExistenteEnCarrito.first()
             productoCarritoAActualizar.cantidad = productoCarritoAActualizar.cantidad + int(request.POST["cantidad"])
             if productoCarritoAActualizar.cantidad < 1:
                 productoCarritoAActualizar.delete()
@@ -122,14 +122,34 @@ def carrito(request):
 def pago(request):
     usrLogueado = User.objects.filter(username = request.user)
     elCarrito = Carrito.objects.filter(user = usrLogueado[0].id,finalizado = False).first()
-
+    currentDirSelected = None
+    compraTerminada = False
     productosEnCarrito = Producto_carrito.objects.filter(carrito = elCarrito)
     total = 0
     for item in productosEnCarrito:
         total = total + (item.cantidad * item.producto.precio)
-    context = {"carrito":elCarrito,"items":productosEnCarrito,"total":total}     
-    
-    misDirecciones = "d"
+    post = request.POST
+    if request.method == "POST":
+        if not post.get("idDireccion") is None:
+            print ("Entro a id direccion")
+            currentDirSelected = Direccion.objects.get(id =post["idDireccion"])
+            elCarrito.dir_entrega = currentDirSelected
+            elCarrito.save()
+        elif not post.get("idCarrito") is None:
+            print ("Entro a id carrito")
+            elCarrito.finalizado = True
+            elCarrito.save()
+            compraTerminada = True
+
+        else:
+            print ("Entro a crear direccion")
+
+            Direccion.objects.create(user = usrLogueado.first(),nombre = post["name"], calle = post["address"], numero= post["number"],colonia= post["colonia"],cod_postal= post["zipcode"] )
+            
+
+    misDirecciones = Direccion.objects.filter(user=usrLogueado.first())
+
+    context = {"compraTerminada":compraTerminada,"carrito":elCarrito,"items":productosEnCarrito,"total":total,"misDirecciones":misDirecciones,"currentDirSelected":currentDirSelected}     
     return render(request, 'store/pago.html', context)
 
 

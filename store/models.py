@@ -131,6 +131,7 @@ class Producto_carrito(models.Model):
 class Direccion(models.Model):
     user        =   models.ForeignKey(User, on_delete=models.CASCADE)
     calle       =   models.CharField(max_length=50)
+    nombre      =   models.CharField(max_length=50, null = True)
     numero      =   models.CharField(max_length=50)
     colonia     =   models.CharField(max_length=50)
     cod_postal  =   models.CharField(max_length=20)

@@ -1,61 +1,124 @@
 {% extends 'store/principal.html' %}
 {% load static %}
 {% block content %}
-     <div class="row">
-		<div class="col-lg-6">
-			<div class="box-element" id="form-wrapper">
+  {%if compraTerminada%}
+    <hr>
+    <div class="jumbotron">
+      <h1 class="display-4">Tu pedido esta en camino!</h1>
+      <p class="lead">Tu compra quedo registrada con exito. Espera tu pedido en los proximos dias.</p>
+      
+      <a class="btn btn-primary btn-lg"  href="{% url 'store:tienda' %}" role="button">Seguir comprando</a>
+    </div>
+  {%else%}
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="box-element" id="form-wrapper">
+          {%if currentDirSelected%}
+            <div id="shipping-info">
+              <h4>Información de envío seleccionada:</h4>
+              <hr>
+              <div class="row">
+                <div class="col-sm-12">
+                  
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">{{currentDirSelected.nombre}}</h5>
+                      <p class="card-text">{{currentDirSelected.calle}}, #{{currentDirSelected.numero}}, Col. {{currentDirSelected.colonia}} Codigo postal {{currentDirSelected.cod_postal}}</p>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <form action="/pago/" method="POST" >{% csrf_token %}
+              <input type="text" style="display: none;" name="idCarrito" value = {{carrito.id}}>
+              <input id="form-button" class="btn btn-success btn-block" type="submit" value="Proceder al pago">
+            </form>
 
-				<form id="form">					
-					<div id="shipping-info">
-						
-						<p>Información de envío:</p>
-						<hr>
-						<div class="form-field">
-							<input class="form-control" type="text" name="address" placeholder="Calle..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="city" placeholder="Número..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="state" placeholder="Colonia..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="zipcode" placeholder="Código postal..">
-						</div>
-					</div>
+          {%else%}
+            <div id="shipping-info">
+              {%if misDirecciones%}
+                <p>Mis Direcciones:</p>
+                <hr>
+                {%for direccion in misDirecciones%}
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <!-- <form action=""> -->
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">{{direccion.nombre}}</h5>
+                            <p class="card-text">{{direccion.calle}}, #{{direccion.numero}}, Col. {{direccion.colonia}} Codigo postal {{direccion.cod_postal}}</p>
+                            <form action="/pago/" method="POST"> {% csrf_token %}
+                              <div style="display: flex;justify-content: flex-end;width: 100%;">
+                                <input type="text" name="idDireccion" value="{{direccion.id}}" style="display: none;">
+                                <button type = "submit" class="btn btn-primary">Enviar aqui</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      <!-- </form> -->
+                    </div>
+                  </div>
+                {%endfor%}
+              {%else%}
+              <h4>Registra una nueva direccion</h4>
+                
+              {%endif%}
+              
+              <br>
+              <p>Información de envío:</p>
+              <hr>
+              <form action="/pago/" method="POST"> {% csrf_token %}
+                <div class="form-field">
+                  <input class="form-control" type="text" name="name" placeholder="Nombre de la direccion.." required>
+                </div>
+                <div class="form-field">
+                  <input class="form-control" type="text" name="address" placeholder="Calle.." required>
+                </div>
+                <div class="form-field">
+                  <input class="form-control" type="text" name="number" placeholder="Número.." required>
+                </div>
+                <div class="form-field">
+                  <input class="form-control" type="text" name="colonia" placeholder="Colonia.." required>
+                </div>
+                <div class="form-field">
+                  <input class="form-control" type="text" name="zipcode" placeholder="Código postal.." required>
+                </div>
+                <hr>
+                  <input id="form-button" class="btn btn-success btn-block" type="submit" value="Agregar direccion">
+              </form>
+            </div>
+          {%endif%}
+        </div>
 
-					<hr>
-					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Proceder a pago">
-				</form>
-			</div>
+        <br>
+        
+      </div>
 
-			<br>
-			
-		</div>
+      <div class="col-lg-6">
+        <div class="box-element">
+          <a  class="btn btn-outline-dark" href="{% url 'store:carrito' %}">&#x2190; Regresar a carrito</a>
+          <hr>
+          <h3>Resumen de pedido</h3>
+          <hr>
+          {%for item in items%}
 
-		<div class="col-lg-6">
-			<div class="box-element">
-				<a  class="btn btn-outline-dark" href="{% url 'store:carrito' %}">&#x2190; Regresar a carrito</a>
-				<hr>
-				<h3>Resumen de pedido</h3>
-				<hr>
-				{%for item in items%}
+            <div class="cart-row">
+              <div style="flex:2"><p>{{item.producto.titulo}}</p></div>
+              <div style="flex:1"><p>${{item.producto.precio}}</p></div>
+              <div style="flex:1"><p>x{{item.cantidad}}</p></div>
+              
+              <div style="flex:1"><p><strong>${% widthratio item.cantidad 1 item.producto.precio %}</strong></p></div>
+            </div>
+          {%endfor%}
+          <div class="row">
+            <div class="col-md-10 col-md-offset-1">
 
-					<div class="cart-row">
-						<div style="flex:2"><p>{{item.producto.titulo}}</p></div>
-						<div style="flex:1"><p>${{item.producto.precio}}</p></div>
-						<div style="flex:1"><p>x{{item.cantidad}}</p></div>
-						
-						<div style="flex:1"><p><strong>${% widthratio item.cantidad 1 item.producto.precio %}</strong></p></div>
-					</div>
-				{%endfor%}
-				<div class="row">
-					<div class="col-md-10 col-md-offset-1">
-
-						<h5>Total: <strong>${{total}}</strong></h5>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+              <h5>Total: <strong>${{total}}</strong></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%endif%}
 {% endblock content %}

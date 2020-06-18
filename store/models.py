@@ -81,13 +81,14 @@ class Producto(models.Model):
         return self.precio
 		
     def get_promedio(self):
-        pass
-        # for comentario in valoracion:
-        #     sumas=sumas+item.comentario
-        #     suma =suma+choices.puntuacion
-        # promedio =suma/sumas
-        # return int(self.promedio)
-        # return self.promedio
+        valoraciones=self.valoraciones.all()
+        suma=0
+        for val in valoraciones:
+            suma=suma+val.puntuacion
+        if len(valoraciones) == 0:
+           return 0
+        promedio=suma/len(valoraciones)
+        return round(promedio,1)
 
 
 class Producto_comprado(models.Model):

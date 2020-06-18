@@ -46,11 +46,14 @@ class Producto_vista(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        promedio = self.get_object().get_promedio()
         if self.verificar_compra():
             self.producto_comprado = True
             context['valoracion_id'] = self.evaluado()
-
         context['comprado'] = self.producto_comprado
+        context['promedio']=promedio
+        context['positiva']=range(1,int(promedio)+1)
+        context['negativa']=range(1,5-int(promedio)+1)
         return context
 
     def evaluado(self):

@@ -11,7 +11,7 @@ from django.contrib import messages
 
 
 
-class Tienda_vista(ListView):
+class Listar_Productos(ListView):
     template_name = 'store/tienda.html'
     origen = "Últimos productos agregados"
     queryset = Producto.objects.order_by('-fecha_cre')
@@ -38,7 +38,7 @@ class Tienda_vista(ListView):
             self.origen = f'No se encontraron coincidencias para ("{terminos})"'
 
     
-class Producto_vista(DetailView):
+class Ver_Producto(DetailView):
     model = Producto
     context_object_name = 'producto'
     template_name = 'store/producto.html'
@@ -143,16 +143,21 @@ def pago(request):
             elCarrito.finalizado = True
             elCarrito.save()
             compraTerminada = True
+            agregar_a_comprados(request, productosEnCarrito)
 
         else:
             print ("Entro a crear direccion")
 
-            Direccion.objects.create(user = usrLogueado.first(),nombre = post["name"], calle = post["address"], numero= post["number"],colonia= post["colonia"],cod_postal= post["zipcode"] )
+            Direccion.objects.create(user = usrLogueado.first(),nombre = post["name"],
+                                         calle = post["address"], numero= post["number"],
+                                         colonia= post["colonia"],cod_postal= post["zipcode"] )
             
 
     misDirecciones = Direccion.objects.filter(user=usrLogueado.first())
 
-    context = {"compraTerminada":compraTerminada,"carrito":elCarrito,"items":productosEnCarrito,"total":total,"misDirecciones":misDirecciones,"currentDirSelected":currentDirSelected}     
+    context = {"compraTerminada":compraTerminada,"carrito":elCarrito,"items":productosEnCarrito,
+                                                        "total":total,"misDirecciones":misDirecciones,
+                                                        "currentDirSelected":currentDirSelected}     
     return render(request, 'store/pago.html', context)
 
 
@@ -170,8 +175,9 @@ def agregar_a_comprados(request, productos):
     prod_comprados = usuario.comprados.all()
  
     for producto_del_carrito in productos:
-        if producto_del_carrito not in prod_comprados:
-            nuevo_comprado = Producto_comprado(user=usuario, producto=producto_del_carrito)
+        if producto_del_carrito.producto not in prod_comprados:
+            nuevo_comprado = Producto_comprado(user=usuario,
+                             producto=producto_del_carrito.producto)
             nuevo_comprado.save()
     
 
@@ -190,7 +196,7 @@ def pedidos(request):
     return render(request, 'store/pedidos.html', context)
 
 
-class Valorar(View):
+class Valorar_Producto(View):
     
     form_class = ValForm
     template_name = 'store/valorar_prod.html'

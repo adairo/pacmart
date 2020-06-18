@@ -10,7 +10,6 @@ from django.db import models
 from django.contrib import messages
 
 
-
 class Listar_Productos(ListView):
     template_name = 'store/tienda.html'
     origen = "Últimos productos agregados"
@@ -19,7 +18,7 @@ class Listar_Productos(ListView):
     def get(self, request, *args, **kwargs):
         terminos = request.GET.get('terminos')
 
-        if self.queryset is not None:
+        if self.queryset:
             if terminos:
                self.buscar_producto(terminos)
         else:

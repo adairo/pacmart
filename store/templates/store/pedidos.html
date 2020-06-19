@@ -1,18 +1,24 @@
 {% extends 'store/principal.html' %}
 {% load static %}
 {% block content %}
-<h1><FONT COLOR = #E42C1D >{{titulo}}</FONT></h1>
+<h1><FONT COLOR = "black" >{{titulo}}</FONT></h1>
 <br>
 {% for pedido in pedidos%}
-    <h2><FONT COLOR = #1058DA >ID de pedido:{{pedido.pk}}</FONT></h2>
-    <h4><FONT COLOR = "black">Creado el {{pedido.fecha_fin}}</FONT></h4>
+<div>
+    <h4><strong><FONT COLOR = "black" >ID de pedido:{{pedido.pk}}</FONT></strong></h4>
+    <h6><FONT COLOR = "black">Creado el {{pedido.fecha_fin}}</FONT></h6>
+    
+    <ul>
     {% for produ in pedido.productos.all %}
-      <h4><FONT COLOR = "black">{{produ}} ${{produ.producto.precio}}</FONT></h4>
-    {% endfor %} 
-    <h5><FONT COLOR= "black">Dirección de entrega: {{pedido.dir_entrega.nombre}}, {{pedido.dir_entrega.calle}}, #{{pedido.dir_entrega.numero}}, Col. {{pedido.dir_entrega.colonia}} Codigo postal: {{pedido.dir_entrega.cod_postal}}</FONT></h5>
-    <h3>--------------------------------------------------------------------------</h3>
-    <br>  
+      <li><a href="{{produ.producto.get_absolute_url}}">{{produ}}</a> -   ${{produ.producto.precio}}</li>
+    {% endfor %}
+    </ul>
+
+    <h6><FONT COLOR= "black">Dirección de entrega: {{pedido.dir_entrega.nombre}}, {{pedido.dir_entrega.calle}}, #{{pedido.dir_entrega.numero}}, Col. {{pedido.dir_entrega.colonia}} Codigo postal: {{pedido.dir_entrega.cod_postal}}</FONT></h6>
+    <hr>
+</div>
     {% empty %}
     <h1>¡¡Aun no hay pedidos!!</h1> 
 {% endfor %}
+
 {% endblock content %}

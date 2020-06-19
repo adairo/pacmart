@@ -140,6 +140,7 @@ def pago(request):
         elif not post.get("idCarrito") is None:
             print ("Entro a id carrito")
             elCarrito.finalizado = True
+            elCarrito.fecha_fin = timezone.now()
             elCarrito.save()
             compraTerminada = True
             agregar_a_comprados(request, productosEnCarrito)

@@ -34,14 +34,19 @@
           <li class="nav-item">
             <a class="nav-link" href="/admin">*/admin</a>
           </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+            </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'store:iniciar-sesion' %}">Iniciar sesión</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'store:crear-cuenta' %}">Crear cuenta</a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">Crear cuenta</a>
+            </li>
+          {% endif %}
 
           <li class="nav-item">
             <a class="nav-link" href="{% url 'store:pedidos' %}">Mis pedidos</a>
@@ -59,6 +64,13 @@
         
 
         <div class="container">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
             {% block content %}
             {% endblock content %}
         </div>

@@ -105,7 +105,7 @@ class Carrito(models.Model):
        el pedido no ha sido concretado y el carrito puede editarse. Un pedido finalizado no es más
        que una instancia especial de Carrito.'''
 
-    user        =   models.ForeignKey(User, on_delete=models.CASCADE)
+    user        =   models.ForeignKey(User, on_delete=models.CASCADE, related_name='carritos')
     finalizado  =   models.BooleanField(default=False)
     fecha_crea  =   models.DateTimeField(default=timezone.now)
     fecha_fin   =   models.DateTimeField(null=True)
@@ -122,7 +122,7 @@ class Producto_carrito(models.Model):
     user        =   models.ForeignKey(User, on_delete=models.CASCADE)
     finalizado  =   models.BooleanField(default=False)
     producto    =   models.ForeignKey(Producto, on_delete=models.CASCADE)
-    carrito     =   models.ForeignKey(Carrito, on_delete=models.CASCADE)
+    carrito     =   models.ForeignKey(Carrito, on_delete=models.CASCADE, related_name='productos')
     cantidad    =   models.IntegerField(default=1)
     
     def __str__(self):

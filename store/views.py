@@ -190,9 +190,16 @@ def crear_cuenta(request):
     return render(request, 'store/crear_cuenta.html', context)
 
 
-def pedidos(request):
-    context = {'titulo':'Mis pedidos'}
-    return render(request, 'store/pedidos.html', context)
+class Ver_pedidos(View):
+    template_name = 'store/pedidos.html'
+
+    def get(self,request,*args, **kwargs):
+        user = request.user
+        carritos = user.carritos.all()
+        carritos = carritos.filter(finalizado = True)
+        context = {'titulo':'Pedidos', 'pedidos':carritos}
+        return render(request, self.template_name, context)
+        
 
 
 class Valorar_Producto(View):

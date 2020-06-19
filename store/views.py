@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Producto, Valoracion,Carrito,Producto_carrito, Producto_comprado,Direccion
+from .models import Producto, Valoracion, Carrito, Producto_carrito, Producto_comprado,Direccion
 from .forms import ValForm
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -19,7 +19,7 @@ class Listar_Productos(ListView):
         terminos = request.GET.get('terminos')
 
         if self.queryset:
-            if terminos:
+            if terminos != '' and terminos is not None:
                self.buscar_producto(terminos)
         else:
             self.origen = "Aún no hay productos registrados"
@@ -32,7 +32,8 @@ class Listar_Productos(ListView):
         resultados = self.queryset.filter(
                         titulo__icontains=terminos)
         if resultados is not None:     
-            self.origen = f'Se muestran ({len(self.queryset)}) resultados para "{terminos}"'
+            self.origen = f'Se muestran ({len(resultados)}) resultados para "{terminos}"'
+            self.queryset = resultados
         else:
             self.origen = f'No se encontraron coincidencias para ("{terminos})"'
 

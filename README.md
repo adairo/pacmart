@@ -1,2 +1,2 @@
 # pacmart
-e-commerce website
+e-commerce website built on Django
